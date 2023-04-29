@@ -2,7 +2,7 @@
 
 <p>Render preprocessing time: @preprocessTime ms</p>
 <p>Render time: @renderTime ms &nbsp;&nbsp; Update time: @updateTime ms</p>
-<p>Min:@metrics[0] ms Max:@metrics[metrics.Count - 1] ms Median:@metrics[metrics.Count / 2] ms</p>
+<p>Min:@MinRenderTime ms Max:@MaxRenderTime ms Median:@MedianRenderTime ms</p>
 
 <button class="btn-primary" @onclick=SwitchGeometry>Switch Geomerty</button>
 <button class="btn-primary" @onclick=RunBenchmark>Run List Benchmark</button>
@@ -11,6 +11,12 @@
 @code {
     [Parameter]
     public int Fps { get; set; }
+
+    public long MinRenderTime => metrics[metricsIds[0]];
+
+    public long MaxRenderTime => metrics[metricsIds[metrics.Count - 1]];
+
+    public long MedianRenderTime => metrics[metricsIds[metrics.Count / 2]];
 
     private long preprocessTime = 0;
     private long updateTime = 0;
@@ -36,21 +42,24 @@
 
     private Timer timer;
     private List<long> metrics;
+    private List<int> metricsIds;
     private int floatingIndex = 0;
     private System.Diagnostics.Stopwatch swRender;
     private System.Diagnostics.Stopwatch swUpdate;
 
     protected override async Task OnInitializedAsync()
     {
-        metrics = new List<long>(Fps * 2);
-        for (int i = 0; i < Fps * 2; i++) {
+        metrics = new List<long>(Fps * 5);
+        metricsIds = new List<int>(Fps * 5);
+        for (int i = 0; i < Fps * 5; i++) {
             metrics.Add(long.MaxValue);
+            metricsIds.Add(i);
         }
         swUpdate = new System.Diagnostics.Stopwatch();
         swRender = new System.Diagnostics.Stopwatch();
         timer = new Timer(new TimerCallback(_ => {
             swUpdate.Restart();
-            metrics.Sort();
+            metricsIds.Sort((l, r) => metrics[l].CompareTo(metrics[r]));
             RotateZ(ref transformMatrix, 0.2f / (float)Fps);
             RotateY(ref transformMatrix, 0.5f / (float)Fps);
             RotateX(ref transformMatrix, 0.3f / (float)Fps);
