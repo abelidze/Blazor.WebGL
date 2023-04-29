@@ -1,7 +1,12 @@
 # -*- coding: utf-8 -*-
+import os
 import telebot
 from functions import log, set_log
-from bottoken import token
+
+try:
+	from bottoken import token
+except:
+	token = os.getenv('BLAZOR_BOT_TOKEN', '123456789:AAAAAAAAAAAAAAAAAAAA_tttttttttttttt')
 
 botApp = telebot.TeleBot(token)
 

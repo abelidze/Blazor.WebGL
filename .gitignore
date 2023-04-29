@@ -5,6 +5,7 @@ bin
 obj
 dev
 __pycache__
+*.log
 *.suo
 *.vsp
 *.psess
@@ -41,3 +42,4 @@ _ReSharper*/
 
 *.sublime-workspace
 *.sublime-project
+**/bottoken*
