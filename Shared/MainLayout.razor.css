@@ -1,0 +1,33 @@
+.page {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    background-image: linear-gradient(180deg, rgb(5, 39, 103) 0%, #3a0647 70%);
+    height: 100vh;
+}
+
+main {
+    color: white;
+    flex: 1;
+}
+
+nav.navbar {
+    background-color: rgba(0,0,0,0.4);
+    height: 3.5rem;
+    align-items: center;
+    position: sticky;
+    top: 0;
+    z-index: 1;
+}
+
+.navbar-brand {
+    font-size: 1.1rem;
+    padding: 0 1em;
+}
+
+@media (min-width: 641px) {
+    article {
+        padding-left: 2rem !important;
+        padding-right: 1.5rem !important;
+    }
+}
